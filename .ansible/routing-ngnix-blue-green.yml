@@ -1,0 +1,7 @@
+---
+
+- hosts: ngnix-routing
+  pre_tasks:
+   - include: tasks/load-vars.yml
+  roles:
+   - role: routing-ngnix-blue-green

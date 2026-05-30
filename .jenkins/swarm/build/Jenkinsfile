@@ -1,0 +1,123 @@
+#!/usr/bin/env groovy
+
+@Library('utils-v2') _
+import br.com.autoglass.*
+
+try { 
+
+	node('dotnet') 
+	{
+		stage('checkout')
+		{
+			def scmVars = checkout scm
+
+			buildInfo.configurar([gitVars : scmVars, nomeRepositorio: 'teste'])
+		}
+
+		stage('build') 
+		{
+			powershell "dotnet tool restore"
+			powershell 'dotnet cake --target buildsolution'
+		}
+
+		stage('testes:unitarios') 
+		{	
+			powershell 'dotnet cake --target testreport'
+			
+			xunit.analisarResultadoDotNetCore();
+		}
+
+		stage('testes:cobertura')
+		{
+			coberturaTestes.analisarResultado([conditionalCoverageTargets: '80, 80, 00', lineCoverageTargets: '80, 80, 00', methodCoverageTargets: '80, 80, 00'])
+		}
+
+		stage('testes:qualidade')
+		{
+			strykerMutator.analisarQualidadeTestes()
+		}
+
+		sonarqube.analisarProjetosDotNet();
+
+		if(buildInfo.deploy()) 
+		{
+			def deployTasks = [:]
+
+			if(params.DeployApi)
+			{
+				deployTasks["deploy_api"] = 
+				{
+					stage('deploy:api')
+					{
+						build job: "${env.JOB_NAME}-api", wait: true, parameters: [stringParam(name: 'tag', value: "${env.TAG}")]
+
+						if(buildInfo.master()){
+							//Preencher com valor localizado em: APM - Metadata - Entity Guid
+							newrelic.notificarDeploy([appGuid: ''])
+						}
+					}
+				}
+			}
+
+			if(params.DeployJobs)
+			{
+				deployTasks["deploy_jobs"] = 
+				{
+					stage('deploy:jobs')
+					{
+						build job: "${env.JOB_NAME}-jobs", wait: true, parameters: [stringParam(name: 'tag', value: "${env.TAG}")]
+
+						if(buildInfo.master()){
+							//Preencher com valor localizado em: APM - Metadata - Entity Guid
+							newrelic.notificarDeploy([appGuid: ''])
+						}
+					}
+				}
+			}
+
+			if(params.DeployConsumer)
+			{
+				deployTasks["deploy_consumer"] =
+				{
+					stage('deploy:consumer')
+					{
+						build job: "${env.JOB_NAME}-consumer", wait: true, parameters: [stringParam(name: 'tag', value: "${env.TAG}")]
+
+						if(buildInfo.master()){
+							//Preencher com valor localizado em: APM - Metadata - Entity Guid
+							newrelic.notificarDeploy([appGuid: ''])
+						}
+					}
+				}
+			}
+
+			if(params.DeployWorker)
+			{
+				deployTasks["deploy_worker"] =
+				{
+					stage('deploy:worker')
+					{
+						build job: "${env.JOB_NAME}-worker", wait: true, parameters: [stringParam(name: 'tag', value: "${env.TAG}")]
+
+						if(buildInfo.master()){
+							//Preencher com valor localizado em: APM - Metadata - Entity Guid
+							newrelic.notificarDeploy([appGuid: ''])
+						}
+					}
+				}
+			}
+
+			parallel deployTasks
+		}
+	}
+}
+catch(Exception e)
+{	
+	currentBuild.result = 'FAILURE'
+
+	throw e;
+}  
+finally 
+{ 
+	bitbucket.notifificarStatusBuild()
+}

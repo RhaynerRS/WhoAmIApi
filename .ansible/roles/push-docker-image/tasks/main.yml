@@ -1,0 +1,6 @@
+---
+
+- name: Push Image to Repository
+  docker_image:
+    name: "{{ ecrRepositorio }}/{{ repositorioImage }}:{{ tag }}"
+    push: yes

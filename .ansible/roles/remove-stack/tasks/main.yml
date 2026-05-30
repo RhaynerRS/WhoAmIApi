@@ -1,0 +1,4 @@
+---
+
+- name: Remove stack
+  command: docker stack rm {{ repositorioImage }}-{{ tag }}

@@ -1,0 +1,5 @@
+profileECR: "aws-hml"
+ecrRepositorio: "973580931382.dkr.ecr.sa-east-1.amazonaws.com"
+aspNetCoreEnvironment: "Hml"
+coreCLREnableProfiling: "0"
+region: "sa-east-1"

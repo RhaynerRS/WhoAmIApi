@@ -1,0 +1,7 @@
+﻿replicas: 2
+tag: "api-qa"
+porta: "5000"
+limitsMemory: "64MB"
+limitsCpus: "1.0"
+nodeLabel: [node.labels.api == true]
+dockerFileDirectory: "src/Richter.WhoAmIApi.API"

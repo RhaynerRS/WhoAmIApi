@@ -1,0 +1,13 @@
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.vscode
+bin/
+obj/
+out/
+tools/
+TestReports/
+Jenkins/
+NuGet.Config

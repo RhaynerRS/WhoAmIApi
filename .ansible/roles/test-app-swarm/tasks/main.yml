@@ -1,0 +1,7 @@
+---
+
+- name: Test app SWARM
+  uri:
+    url: http://localhost:{{ porta }}
+    method: GET
+    status_code: 200

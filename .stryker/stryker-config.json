@@ -1,0 +1,17 @@
+{
+  "stryker-config": {
+    "thresholds": {
+      "high": 90,
+      "low": 85,
+      "break": 80
+    },
+    "reporters": [ "cleartext", "html", "progress" ],
+    "mutate": [
+      "**/*.Domain/**/Services/*.cs",
+      "**/*.Domain/**/Entities/*.cs"
+    ],
+    "ignore-methods": [
+      "Log*"
+    ]
+  }
+}

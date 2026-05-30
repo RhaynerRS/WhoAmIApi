@@ -1,0 +1,5 @@
+[ansible-jenkins]
+localhost
+
+[swarm]
+swarm-green.autoglass.com.br

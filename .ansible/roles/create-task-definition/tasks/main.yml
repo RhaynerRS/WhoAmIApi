@@ -1,0 +1,43 @@
+- name: Create a Task Definition
+  ecs_taskdefinition: 
+    family: "{{ repositorioImage }}-{{ tag }}"
+    execution_role_arn: "{{ roleARN }}"
+    task_role_arn: "{{ roleARN }}"
+    profile: "{{profileECR}}"
+    containers:
+    - name: "{{ repositorioImage }}-{{ tag }}"
+      essential: true
+      image: "{{ ecrRepositorio }}/{{ repositorioImage }}:{{ tag }}"
+      environment:
+        - name: "ASPNETCORE_ENVIRONMENT"
+          value: "{{ aspNetCoreEnvironment }}"
+        - name: "CORECLR_ENABLE_PROFILING"
+          value: "{{ coreCLREnableProfiling }}"
+        - name: "SQS_ACCESS_KEY"
+          value: "{{ sqsAccessKey }}"
+        - name: "SQS_SECRET_KEY"
+          value: "{{ sqsSecretKey }}"
+        - name: "DB_USER_KEY"
+          value: "{{ dbAccessKey }}"
+        - name: "DB_SECRET_KEY"
+          value: "{{ dbSecretKey }}"
+        - name: "KEY_CRYPTO_ENV"
+          value: "{{ keyCryptoEnv }}"
+        - name: "KAFKA_ACCESS_KEY"
+          value: "{{ kafkaAccessKey }}"
+        - name: "KAFKA_SECRET_KEY"
+          value: "{{ kafkaSecretKey }}"
+      portMappings:
+      - containerPort: "{{ porta }}"
+        hostPort: "{{ porta }}"
+      logConfiguration:
+        logDriver: awslogs
+        options:
+          awslogs-group: /ecs/{{ repositorioImage }}-{{ tag }}
+          awslogs-region: "{{ region }}"
+          awslogs-stream-prefix: ecs
+    launch_type: FARGATE
+    cpu: "{{ cpu }}"
+    memory: "{{ memory }}"
+    state: present
+    network_mode: awsvpc

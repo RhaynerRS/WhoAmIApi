@@ -1,0 +1,8 @@
+---
+
+- name: GET Revision of Task Definition
+  shell: aws ecs --profile {{ profileECR }} --region {{ region }} describe-task-definition --task-definition {{ repositorioImage }}-{{ tag }}  | egrep "revision" | tr "," " " | awk '{print $2}' | sed 's/"$//'
+  register: task_definition
+
+- name: Deregister Task Revision
+  shell: aws ecs --profile {{ profileECR }} --region {{ region }} deregister-task-definition --task-definition {{ repositorioImage }}-{{ tag }}:"{{task_definition.stdout}}"

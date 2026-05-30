@@ -1,0 +1,8 @@
+---
+
+- name: GET ECR Login
+  shell: (aws ecr get-login --no-include-email --region {{ region }} --profile {{profileECR}})
+  register: aws_login
+
+- name: Execute ECR Login
+  shell: "{{aws_login.stdout}}"

@@ -1,0 +1,7 @@
+---
+
+- hosts: swarm
+  pre_tasks:
+   - include: tasks/load-vars.yml
+  roles:
+   - role: create-task-definition

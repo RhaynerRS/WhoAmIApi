@@ -1,0 +1,45 @@
+---
+
+- name: Create a Stack
+  docker_stack:
+    state: present
+    name: "{{ repositorioImage }}-{{ tag }}"
+    with_registry_auth: yes
+    compose:
+    - version: '3.7'
+      services:
+        services-prod:
+          hostname: "{{ repositorioImage }}:{{ tag }}-{{ '{{' }}.Task.Slot{{ '}}' }}"
+          image: "{{ ecrRepositorio }}/{{ repositorioImage }}:{{ tag }}"
+          ports:
+            - "{{ porta }}:{{ porta }}"
+          logging:
+            options:
+              max-size: 50m
+          deploy:
+            replicas: "{{ replicas }}"
+            mode: replicated
+            placement:
+              constraints:  "{{ nodeLabel }}"
+            restart_policy:
+              condition: on-failure
+              delay: 10s
+            #resources:
+             # limits:
+              #  memory: "{{ limitsMemory }}"
+               # cpus: "{{ limitsCpus }}"
+          environment:
+              ASPNETCORE_ENVIRONMENT : '{{ aspNetCoreEnvironment }}'
+              CORECLR_ENABLE_PROFILING : "{{ coreCLREnableProfiling }}"
+              AWS_ACCESS_KEY : "{{ awsAccessKey }}"
+              AWS_SECRET_KEY : "{{ awsSecretKey }}"
+              DB_USER_KEY : "{{ dbAccessKey }}"
+              DB_SECRET_KEY : "{{ dbSecretKey }}"
+              KEY_CRYPTO_ENV : "{{ keyCryptoEnv }}"
+              KAFKA_ACCESS_KEY : "{{ kafkaAccessKey }}"
+              KAFKA_SECRET_KEY : "{{ kafkaSecretKey }}"
+          networks:
+              - rede-container
+      networks:
+        rede-container:
+          external: true

@@ -1,0 +1,12 @@
+[ansible-jenkins]
+localhost
+
+[swarm]
+swarm-green.autoglass.com.br
+
+[ngnix-routing]
+svlprd0059.autoglass.com.br
+svlprd0060.autoglass.com.br
+svlprd0061.autoglass.com.br
+svlprd0062.autoglass.com.br
+

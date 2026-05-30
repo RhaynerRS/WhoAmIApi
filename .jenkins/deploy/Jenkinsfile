@@ -1,0 +1,232 @@
+#!/usr/bin/env groovy
+
+@Library('utils-v2') _
+import br.com.autoglass.*
+
+node('ansible') 
+{
+	stage('checkout')
+	{
+		def scmVars = checkout scm
+
+		buildInfo.configurar([gitVars : scmVars, nomeRepositorio: 'teste'])
+	}
+
+	dir('.ansible')
+	{
+		def environment = buildInfo.Environment()
+		def inventory = "hosts/${environment}/${params.TipoApp}/inventory";
+		def criptografia = new CriptografiaAES()
+
+		stage('docker:build-image')
+		{ 
+			sh "ansible-playbook -i ${inventory} build-docker-image.yml \
+				-e env=${environment} \
+				-e workspace=${WORKSPACE} \
+				-v"
+		}
+				
+		stage('docker:push-image-aws')
+		{
+			sh "ansible-playbook -i ${inventory} push-docker-image.yml \
+				-e env=${environment}"
+		}
+
+		if(params.TipoApp == 'api')
+		{
+
+			if(buildInfo.master())
+			{
+				def inventoryBlue = "hosts/${environment}-blue/${params.TipoApp}/inventory";
+
+				stage('deploy:blue-stack')
+				{
+					withCredentials(
+					 [[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+	                 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+					{			
+						def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO) 
+						
+						sh "ansible-playbook -i ${inventoryBlue} create-stack.yml \
+							-e env=${environment} \
+							-e awsAccessKey=${env.USER_AWS} \
+							-e awsSecretKey=${env.PWD_AWS} \
+							-e kafkaAccessKey=${env.USER_KAFKA} \
+							-e kafkaSecretKey=${env.PWD_KAFKA} \
+							-e dbAccessKey=${env.USER_DB} \
+							-e dbSecretKey=${pwdDB} \
+							-e keyCryptoEnv=${env.KEY_CRYPTO}"
+					}
+
+					sleep 30
+				}
+
+				stage('test:blue-stack')
+				{
+					sh "ansible-playbook -i ${inventoryBlue} test-app-swarm.yml \
+						-e env=${environment}-blue"
+				}
+
+				stage('nginx:routing-blue')
+				{
+					sh "ansible-playbook -i ${inventory} routing-ngnix-blue-green.yml \
+						-e destRoute=blue \
+						-e env=${environment}"
+				}
+
+				stage('docker:remove-stack-green')
+				{
+					sh "ansible-playbook -i ${inventory} remove-stack.yml \
+						-e env=${environment}"
+				}	
+
+				stage('deploy:green-stack')
+				{
+					withCredentials(
+					 [[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+	                 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+					{
+						def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO)
+
+						sh "ansible-playbook -i ${inventory} create-stack.yml \
+							-e env=${environment} \
+							-e awsAccessKey=${env.USER_AWS} \
+							-e awsSecretKey=${env.PWD_AWS} \
+							-e kafkaAccessKey=${env.USER_KAFKA} \
+							-e kafkaSecretKey=${env.PWD_KAFKA} \
+							-e dbAccessKey=${env.USER_DB} \
+							-e dbSecretKey=${pwdDB} \
+							-e keyCryptoEnv=${env.KEY_CRYPTO}"
+					}
+
+					sleep 60
+				}
+
+				stage('test:green-stack')
+				{
+					sh "ansible-playbook -i ${inventory} test-app-swarm.yml \
+						-e env=${environment}"
+				}
+
+				stage('nginx:routing-green')
+				{
+					sh "ansible-playbook -i ${inventory} routing-ngnix-blue-green.yml \
+						-e destRoute=green \
+						-e env=${environment}"
+				}
+
+				stage('docker:remove-stack-blue')
+				{
+					sleep 30
+
+					sh "ansible-playbook -i ${inventoryBlue} remove-stack.yml \
+						-e env=${environment}-blue"
+				}
+			}
+			else
+			{
+				stage('deploy:stack')
+				{
+					withCredentials(
+					 [[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+	                 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+					{			
+						def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO)
+
+						sh "ansible-playbook -i ${inventory} create-stack.yml \
+							-e env=${environment} \
+							-e awsAccessKey=${env.USER_AWS} \
+							-e awsSecretKey=${env.PWD_AWS} \
+							-e kafkaAccessKey=${env.USER_KAFKA} \
+							-e kafkaSecretKey=${env.PWD_KAFKA} \
+							-e dbAccessKey=${env.USER_DB} \
+							-e dbSecretKey=${pwdDB} \
+							-e keyCryptoEnv=${env.KEY_CRYPTO}"
+					}
+				}
+			}
+		}
+
+		if(params.TipoApp == 'jobs')
+		{
+			stage('deploy:stack')
+			{
+				withCredentials(
+					 [[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+	                 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+				{				
+					def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO)
+
+					sh "ansible-playbook -i ${inventory} create-stack.yml \
+						-e env=${environment} \
+						-e awsAccessKey=${env.USER_AWS} \
+						-e awsSecretKey=${env.PWD_AWS} \
+						-e kafkaAccessKey=${env.USER_KAFKA} \
+						-e kafkaSecretKey=${env.PWD_KAFKA} \
+						-e dbAccessKey=${env.USER_DB} \
+						-e dbSecretKey=${pwdDB} \
+						-e keyCryptoEnv=${env.KEY_CRYPTO}"
+				}
+			}
+		}
+
+		if(params.TipoApp == 'worker')
+		{
+			stage('deploy:stack')
+			{
+				withCredentials(
+					[[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+				{
+					def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO)
+					
+					sh "ansible-playbook -i ${inventory} create-stack.yml \
+						-e env=${environment} \
+						-e awsAccessKey=${env.USER_AWS} \
+						-e awsSecretKey=${env.PWD_AWS} \
+						-e kafkaAccessKey=${env.USER_KAFKA} \
+						-e kafkaSecretKey=${env.PWD_KAFKA} \
+						-e dbAccessKey=${env.USER_DB} \
+						-e dbSecretKey=${pwdDB} \
+						-e  keyCryptoEnv=${env.KEY_CRYPTO}"
+				}
+			}
+		}
+
+		if(params.TipoApp == 'consumers')
+		{
+			stage('deploy:stack')
+			{
+				withCredentials(
+					[[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_AWS', passwordVariable: 'PWD_AWS', credentialsId: "AWS_DOTNET_TEMPLATE_${environment.toUpperCase()}"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+					[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+				{
+					def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO)
+
+					sh "ansible-playbook -i ${inventory} create-stack.yml \
+						-e env=${environment} \
+						-e awsAccessKey=${env.USER_AWS} \
+						-e awsSecretKey=${env.PWD_AWS} \
+						-e kafkaAccessKey=${env.USER_KAFKA} \
+						-e kafkaSecretKey=${env.PWD_KAFKA} \
+						-e dbAccessKey=${env.USER_DB} \
+						-e dbSecretKey=${pwdDB} \
+						-e keyCryptoEnv=${env.KEY_CRYPTO}"
+				}
+			}
+		}
+
+	}
+}

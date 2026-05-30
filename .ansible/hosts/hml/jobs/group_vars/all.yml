@@ -1,0 +1,7 @@
+﻿replicas: 1
+tag: "jobs-hml"
+porta: "60000"
+#limitsMemory: "64MB"
+#limitsCpus: "1.0"
+nodeLabel: [node.labels.job == true]
+dockerFileDirectory: "src/Richter.WhoAmIApi.Jobs"

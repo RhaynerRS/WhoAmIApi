@@ -1,0 +1,84 @@
+#!/usr/bin/env groovy
+
+@Library('utils-v2') _
+import br.com.autoglass.*
+
+node('ansible') 
+{
+	stage('checkout')
+	{
+		def scmVars = checkout scm
+
+		buildInfo.configurar([gitVars : scmVars, nomeRepositorio: 'teste'])
+	}
+
+	dir('.ansible')
+	{
+		def environment = buildInfo.Environment()
+		def inventory = "hosts/${environment}/${params.TipoApp}/inventory";
+		def criptografia = new CriptografiaAES()
+
+		stage('docker:build-image')
+		{ 
+			sh "ansible-playbook -i ${inventory} build-docker-image.yml \
+				-e env=${environment} \
+				-e workspace=${WORKSPACE} \
+				-v"
+		}
+				
+		stage('docker:push-image-aws')
+		{
+			sh "ansible-playbook -i ${inventory} push-docker-image.yml \
+				-e env=${environment}"
+		}
+
+		stage ('AWS:Deregister Task Definition')
+		{
+			sh "ansible-playbook -i ${inventory} deregister-task-revision.yml \
+				-e env=${environment} \
+				-e ansible_python_interpreter=/home/jenkins/virtualenvironment/project/bin/python \
+				-v"
+		}
+
+		stage('AWS:Create Task Definition')
+		{
+			withCredentials(
+					 [[$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_SQS', passwordVariable: 'PWD_SQS', credentialsId: "AWS_SQS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_KAFKA', passwordVariable: 'PWD_KAFKA', credentialsId: "KAFKA_SPOTIGLASS_${environment.toUpperCase()}"],
+					 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'ID_KEY_CRYPTO', passwordVariable: 'KEY_CRYPTO', credentialsId: "KEY_CRYPTO_ENV"],
+	                 [$class: 'UsernamePasswordMultiBinding', usernameVariable: 'USER_DB', passwordVariable: 'PWD_DB', credentialsId: "BACKENDDAY_DB_${environment.toUpperCase()}"]])
+					{			
+						def pwdDB = criptografia.gerarSecretEnv(env.PWD_DB, env.KEY_CRYPTO) 
+						
+						sh "ansible-playbook -i ${inventory} create-task-definition.yml \
+							-e env=${environment} \
+							-e sqsAccessKey=${env.USER_SQS} \
+							-e sqsSecretKey=${env.PWD_SQS} \
+							-e kafkaAccessKey=${env.USER_KAFKA} \
+							-e kafkaSecretKey=${env.PWD_KAFKA} \
+							-e dbAccessKey=${env.USER_DB} \
+							-e dbSecretKey=${pwdDB} \
+							-e keyCryptoEnv=${env.KEY_CRYPTO} \
+							-e ansible_python_interpreter=/home/jenkins/virtualenvironment/project/bin/python \
+							-v"
+					}
+		}
+
+		stage ('AWS:Update Service')
+		{
+			sh "ansible-playbook -i ${inventory} update-service.yml \
+				-e env=${environment} \
+				-e ansible_python_interpreter=/home/jenkins/virtualenvironment/project/bin/python \
+				-v"
+		}
+
+		stage ('AWS:Test if application has been updated - 3 minutes ')
+		{
+			sh "ansible-playbook -i ${inventory} test-app-fargate.yml \
+				-e env=${environment} \
+				-e ansible_python_interpreter=/home/jenkins/virtualenvironment/project/bin/python \
+				-v"
+		}
+		
+	}
+}

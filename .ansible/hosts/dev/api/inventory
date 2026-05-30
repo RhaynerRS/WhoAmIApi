@@ -1,0 +1,5 @@
+[ansible-jenkins]
+localhost
+
+[swarm]
+localhost

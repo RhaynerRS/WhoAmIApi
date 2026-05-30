@@ -1,0 +1,4 @@
+profileECR: "aws-prod"
+ecrRepositorio: "069216277836.dkr.ecr.sa-east-1.amazonaws.com"
+aspNetCoreEnvironment: "Prod"
+coreCLREnableProfiling: "0"

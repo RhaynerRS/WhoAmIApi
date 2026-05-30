@@ -1,0 +1,8 @@
+﻿replicas: 1
+tag: "worker-prod"
+porta: "7000"
+#limitsMemory: "64MB"
+#limitsCpus: "1.0"
+nodeLabel: [node.labels.worker == true]
+dockerFileDirectory: "src/Richter.WhoAmIApi.Workers"
+CoreCLREnableProfiling: "0"

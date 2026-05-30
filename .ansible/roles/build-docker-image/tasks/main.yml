@@ -1,0 +1,4 @@
+---
+
+- name: Build Docker Image
+  shell: docker build -f "{{ workspace }}/{{ dockerFileDirectory }}"/Dockerfile "{{ workspace }}" -t "{{ ecrRepositorio }}/{{ repositorioImage }}:{{ tag }}"

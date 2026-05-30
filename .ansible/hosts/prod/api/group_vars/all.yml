@@ -1,0 +1,7 @@
+﻿replicas: 5
+tag: "api-prod"
+porta: "5000"
+#limitsMemory: "64MB"
+#limitsCpus: "1.0"
+nodeLabel: [node.labels.apifarm == true]
+dockerFileDirectory: "src/Richter.WhoAmIApi.API"

@@ -1,0 +1,14 @@
+---
+
+- name: Routing NGINX {{ destRoute }}
+  command: sh /etc/nginx/conf.d/routing-{{ destRoute }}.sh {{ porta }}
+
+- name: Test Config NGINX
+  shell: sudo /usr/sbin/nginx -t
+  register: command_result
+  failed_when: "'test is successful' not in command_result.stderr"
+
+- name: Reload NGINX
+  shell: sudo service nginx reload
+  register: command_result
+  failed_when: "'test failed' in command_result.stderr"

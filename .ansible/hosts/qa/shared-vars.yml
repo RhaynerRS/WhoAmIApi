@@ -1,0 +1,4 @@
+profileECR: "aws-qa"
+ecrRepositorio: "973580931382.dkr.ecr.sa-east-1.amazonaws.com"
+aspNetCoreEnvironment: "Qa"
+coreCLREnableProfiling: "0"

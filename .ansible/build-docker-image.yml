@@ -1,0 +1,7 @@
+---
+
+- hosts: ansible-jenkins
+  pre_tasks:
+   - include: tasks/load-vars.yml
+  roles:
+   - role: build-docker-image

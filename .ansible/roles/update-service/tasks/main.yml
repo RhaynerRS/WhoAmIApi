@@ -1,0 +1,6 @@
+- name: GET Revision of Task Definition
+  shell: aws ecs --profile {{ profileECR }} --region {{ region }} describe-task-definition --task-definition {{ repositorioImage }}-{{ tag }}  | egrep "revision" | tr "," " " | awk '{print $2}' | sed 's/"$//'
+  register: task_definition
+
+- name: Update Service Definition
+  shell: aws ecs --profile {{ profileECR }} --region {{ region }} update-service --service service-{{ repositorioImage }}-{{ tag }} --cluster {{ cluster }} --task-definition {{ repositorioImage }}-{{ tag }}:"{{task_definition.stdout}}"

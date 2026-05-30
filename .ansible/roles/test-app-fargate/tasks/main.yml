@@ -1,0 +1,9 @@
+---
+
+- name: Wait pipeline procedure
+  shell: sleep 180
+
+- name: Check if had deploy issue
+  shell: aws ecs --profile {{ profileECR }} --region {{ region }} list-tasks --cluster {{ cluster }} --service-name service-{{ repositorioImage }}-{{ tag }} --desired-status STOPPED | grep '/' | cut -d '/' -f 2
+  register: id_after
+  failed_when: '"{{ cluster }}" in id_after.stdout'

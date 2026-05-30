@@ -1,0 +1,4 @@
+---
+
+- include_vars: "hosts/shared-vars.yml"
+- include_vars: "hosts/{{env}}/shared-vars.yml"

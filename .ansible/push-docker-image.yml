@@ -1,0 +1,8 @@
+---
+
+- hosts: ansible-jenkins
+  pre_tasks:
+   - include: tasks/load-vars.yml
+  roles:
+   - role: login-ecr
+   - role: push-docker-image

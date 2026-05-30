@@ -1,0 +1,8 @@
+﻿replicas: 1
+tag: "consumer-prod"
+porta: "9001"
+#limitsMemory: "64MB"
+#limitsCpus: "1.0"
+nodeLabel: [node.labels.consumer == true]
+dockerFileDirectory: "src/Richter.WhoAmIApi.Consumers"
+CoreCLREnableProfiling: "0"

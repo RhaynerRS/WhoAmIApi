@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.Development.json" TargetPath="shared\appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.Hml.json" TargetPath="shared\appsettings.Hml.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json" TargetPath="shared\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.Prod.json" TargetPath="shared\appsettings.Prod.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Askmethat.Aspnet.JsonLocalizer" Version="4.0.1" />
+	<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+	<PackageReference Include="Scrutor" Version="6.0.1" />
+	<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+	<PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+	<PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />
+	<PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+	<PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+	<PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+	<PackageReference Include="Elastic.Serilog.Sinks" Version="8.12.3" />
+	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.1" />
+	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Richter.WhoAmIApi.Application\Richter.WhoAmIApi.Application.csproj" />
+    <ProjectReference Include="..\Richter.WhoAmIApi.CrossCutting\Richter.WhoAmIApi.CrossCutting.csproj" />
+    <ProjectReference Include="..\Richter.WhoAmIApi.Infra\Richter.WhoAmIApi.Infra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="Config\Swagger\Assets\favicon.png" TargetPath="assets\swagger\favicon.png">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+    <None Update="Config\Swagger\Assets\logo.png" TargetPath="assets\swagger\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Swagger\Assets\swagger-custom-ui.css" TargetPath="assets\swagger\swagger-custom-ui.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Swagger\Assets\swagger-custom-ui.js" TargetPath="assets\swagger\swagger-custom-ui.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

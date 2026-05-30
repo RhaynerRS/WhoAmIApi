@@ -1,0 +1,184 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F04BF1F-3B6C-4EC8-8681-A7B534D00CE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{789294EC-8C19-402F-9AC8-386EBC9C7BB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{B9266FA0-5595-44DB-A605-AA2545D2BBBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{BB9FEF2E-40D4-4F5F-8B74-4E17AFCFECE5}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{03DE6285-B7E0-4ACE-AF53-3D77D3390280}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".newrelic", ".newrelic", "{46F3E66A-A85F-48C9-8A37-FA15FD9B4A13}"
+	ProjectSection(SolutionItems) = preProject
+		.newrelic\newrelic.config = .newrelic\newrelic.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".stryker", ".stryker", "{F92BF3B4-E3B2-4F00-AF37-193C172ED717}"
+	ProjectSection(SolutionItems) = preProject
+		.stryker\stryker-config.json = .stryker\stryker-config.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Richter.WhoAmIApi.API", "src\Richter.WhoAmIApi.API\Richter.WhoAmIApi.API.csproj", "{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Richter.WhoAmIApi.CrossCutting", "src\Richter.WhoAmIApi.CrossCutting\Richter.WhoAmIApi.CrossCutting.csproj", "{0F522534-C5BF-4179-BADA-1FF14F1F2F2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.Domain", "src\Richter.WhoAmIApi.Domain\Richter.WhoAmIApi.Domain.csproj", "{BB71D6D3-FC64-4FBF-A118-C7CDFE92F59C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.Infra", "src\Richter.WhoAmIApi.Infra\Richter.WhoAmIApi.Infra.csproj", "{006FF9A9-226F-4919-B23A-6839C706EA0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.Application", "src\Richter.WhoAmIApi.Application\Richter.WhoAmIApi.Application.csproj", "{DC82A3AC-3E2B-4BF5-BAAC-C499B2B976EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.IoC", "src\Richter.WhoAmIApi.IoC\Richter.WhoAmIApi.IoC.csproj", "{7EAC9839-5820-48F5-A67E-3CE882EECAFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".template", ".template", "{8C7018B2-61B7-4D57-9C25-41682ECFE2A1}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\build.cake = .templates\build.cake
+		.templates\build.ps1 = .templates\build.ps1
+		.templates\Jenkinsfile = .templates\Jenkinsfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{888B2D9C-2F1C-480C-8B26-4026097E432B}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-solution-jobs.ps1 = .templates\scripts\pos-solution-jobs.ps1
+		.templates\scripts\pos-solution-kafka-consumer.ps1 = .templates\scripts\pos-solution-kafka-consumer.ps1
+		.templates\scripts\pos-solution-kafka-producer.ps1 = .templates\scripts\pos-solution-kafka-producer.ps1
+		.templates\scripts\pos-solution-sqs-consumer.ps1 = .templates\scripts\pos-solution-sqs-consumer.ps1
+		.templates\scripts\pos-solution-sqs-publisher.ps1 = .templates\scripts\pos-solution-sqs-publisher.ps1
+		.templates\scripts\pos-solution.ps1 = .templates\scripts\pos-solution.ps1
+		.templates\Solution\.template.config\template.json = .templates\Solution\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A6DD9EBB-5F90-44F8-AF07-7B4A3809A4EA}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-move-created-files.ps1 = .templates\scripts\pos-move-created-files.ps1
+		.templates\scripts\script-adjust-constructor-concatenation.ps1 = .templates\scripts\script-adjust-constructor-concatenation.ps1
+		.templates\scripts\script-format-json.ps1 = .templates\scripts\script-format-json.ps1
+		.templates\scripts\script-insert-code-at-pattern.ps1 = .templates\scripts\script-insert-code-at-pattern.ps1
+		.templates\scripts\script-insert-using.ps1 = .templates\scripts\script-insert-using.ps1
+		.templates\scripts\script-move-folder.ps1 = .templates\scripts\script-move-folder.ps1
+		.templates\scripts\script-replace.ps1 = .templates\scripts\script-replace.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.Domain.Tests", "tests\Richter.WhoAmIApi.Domain.Tests\Richter.WhoAmIApi.Domain.Tests.csproj", "{263980ED-9A8F-A059-7F08-08C2BE7D7D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Richter.WhoAmIApi.Sandbox", "tests\Richter.WhoAmIApi.Sandbox\Richter.WhoAmIApi.Sandbox.csproj", "{1237A564-25B9-F131-43F5-9CC0DBAB02FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqs-publisher", "sqs-publisher", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-sqs-publisher.ps1 = .templates\scripts\pos-sqs-publisher.ps1
+		.templates\sqs-publisher\.template.config\template.json = .templates\sqs-publisher\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka-consumer", "kafka-consumer", "{5CDB8F18-A3D5-406B-99D0-EEDE5BD2F523}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-kafka-consumer.ps1 = .templates\scripts\pos-kafka-consumer.ps1
+		.templates\kafka-consumer\.template.config\template.json = .templates\kafka-consumer\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "kafka-producer", "kafka-producer", "{FC06D659-8F9A-458E-B8CD-7E11C2770800}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\kafka-producer\.template.config\template.json = .templates\kafka-producer\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqs-consumer", "sqs-consumer", "{CA22274D-78DE-4FAF-BC24-91E1D7772745}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-sqs-consumer.ps1 = .templates\scripts\pos-sqs-consumer.ps1
+		.templates\sqs-consumer\.template.config\template.json = .templates\sqs-consumer\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jobs", "jobs", "{DB82AAC1-8E5B-4409-8DAD-75F7CAD8AF87}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\scripts\pos-job.ps1 = .templates\scripts\pos-job.ps1
+		.templates\jobs\.template.config\template.json = .templates\jobs\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A0B3697A-9CD5-4D87-B8D6-A4848888DDD4}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\.nuget\nuget.icon.png = .templates\.nuget\nuget.icon.png
+		.templates\.nuget\package.nuspec = .templates\.nuget\package.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{E7834487-9E68-43AD-AD65-A6B0BFDCE00B}"
+	ProjectSection(SolutionItems) = preProject
+		.templates\.docs\CHANGELOG.md = .templates\.docs\CHANGELOG.md
+		.templates\.docs\README.md = .templates\.docs\README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F522534-C5BF-4179-BADA-1FF14F1F2F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F522534-C5BF-4179-BADA-1FF14F1F2F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F522534-C5BF-4179-BADA-1FF14F1F2F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F522534-C5BF-4179-BADA-1FF14F1F2F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB71D6D3-FC64-4FBF-A118-C7CDFE92F59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB71D6D3-FC64-4FBF-A118-C7CDFE92F59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB71D6D3-FC64-4FBF-A118-C7CDFE92F59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB71D6D3-FC64-4FBF-A118-C7CDFE92F59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006FF9A9-226F-4919-B23A-6839C706EA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006FF9A9-226F-4919-B23A-6839C706EA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006FF9A9-226F-4919-B23A-6839C706EA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006FF9A9-226F-4919-B23A-6839C706EA0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC82A3AC-3E2B-4BF5-BAAC-C499B2B976EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC82A3AC-3E2B-4BF5-BAAC-C499B2B976EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC82A3AC-3E2B-4BF5-BAAC-C499B2B976EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC82A3AC-3E2B-4BF5-BAAC-C499B2B976EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EAC9839-5820-48F5-A67E-3CE882EECAFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EAC9839-5820-48F5-A67E-3CE882EECAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EAC9839-5820-48F5-A67E-3CE882EECAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EAC9839-5820-48F5-A67E-3CE882EECAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{263980ED-9A8F-A059-7F08-08C2BE7D7D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{263980ED-9A8F-A059-7F08-08C2BE7D7D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{263980ED-9A8F-A059-7F08-08C2BE7D7D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{263980ED-9A8F-A059-7F08-08C2BE7D7D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1237A564-25B9-F131-43F5-9CC0DBAB02FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1237A564-25B9-F131-43F5-9CC0DBAB02FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1237A564-25B9-F131-43F5-9CC0DBAB02FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1237A564-25B9-F131-43F5-9CC0DBAB02FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB9FEF2E-40D4-4F5F-8B74-4E17AFCFECE5} = {B9266FA0-5595-44DB-A605-AA2545D2BBBF}
+		{03DE6285-B7E0-4ACE-AF53-3D77D3390280} = {B9266FA0-5595-44DB-A605-AA2545D2BBBF}
+		{46F3E66A-A85F-48C9-8A37-FA15FD9B4A13} = {B9266FA0-5595-44DB-A605-AA2545D2BBBF}
+		{F92BF3B4-E3B2-4F00-AF37-193C172ED717} = {B9266FA0-5595-44DB-A605-AA2545D2BBBF}
+		{D8365EF2-BD48-4D9B-A5E7-BF64F2D8863B} = {789294EC-8C19-402F-9AC8-386EBC9C7BB3}
+		{8C7018B2-61B7-4D57-9C25-41682ECFE2A1} = {B9266FA0-5595-44DB-A605-AA2545D2BBBF}
+		{888B2D9C-2F1C-480C-8B26-4026097E432B} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{A6DD9EBB-5F90-44F8-AF07-7B4A3809A4EA} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{263980ED-9A8F-A059-7F08-08C2BE7D7D28} = {9F04BF1F-3B6C-4EC8-8681-A7B534D00CE0}
+		{1237A564-25B9-F131-43F5-9CC0DBAB02FE} = {9F04BF1F-3B6C-4EC8-8681-A7B534D00CE0}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{5CDB8F18-A3D5-406B-99D0-EEDE5BD2F523} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{FC06D659-8F9A-458E-B8CD-7E11C2770800} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{CA22274D-78DE-4FAF-BC24-91E1D7772745} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{DB82AAC1-8E5B-4409-8DAD-75F7CAD8AF87} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+
+		{A0B3697A-9CD5-4D87-B8D6-A4848888DDD4} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+		{E7834487-9E68-43AD-AD65-A6B0BFDCE00B} = {8C7018B2-61B7-4D57-9C25-41682ECFE2A1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D08C5C62-743B-4E91-BA6B-E5A0DD8892B5}
+	EndGlobalSection
+EndGlobal
