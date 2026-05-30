@@ -1,6 +1,6 @@
-﻿namespace Richter.WhoAmIApi.Application.Auth.Dtos
+namespace Richter.WhoAmIApi.Application.Identity.DataModule.Requests
 {
-    public class RegisterRequest
+    public class UsuarioCadastroRequest
     {
         public string NomeCompleto { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

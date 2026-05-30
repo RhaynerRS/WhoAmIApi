@@ -14,6 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Richter.WhoAmIApi.CrossCutting\Richter.WhoAmIApi.CrossCutting.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
-﻿namespace Richter.WhoAmIApi.Application.Auth
+﻿namespace Richter.WhoAmIApi.CrossCutting.DTO
 {
-    public class JwtSettings
+    public class JwtSettingsDto
     {
         public string SecretKey { get; set; } = string.Empty;
         public string Issuer { get; set; } = string.Empty;

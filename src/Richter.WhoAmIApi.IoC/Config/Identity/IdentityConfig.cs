@@ -1,11 +1,11 @@
-﻿using Richter.WhoAmIApi.Application.Auth;
-using Richter.WhoAmIApi.Infra.Identity;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Richter.WhoAmIApi.CrossCutting.DTO;
+using Richter.WhoAmIApi.Domain.Identity.Entities;
 using System.Text;
 
 namespace Richter.WhoAmIApi.IoC.Config.Identity
@@ -14,12 +14,9 @@ namespace Richter.WhoAmIApi.IoC.Config.Identity
     {
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+            services.Configure<JwtSettingsDto>(configuration.GetSection("Jwt"));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentity<UsuarioAplicacao, MongoIdentityRole<string>>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
@@ -27,10 +24,12 @@ namespace Richter.WhoAmIApi.IoC.Config.Identity
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddMongoDbStores<UsuarioAplicacao, MongoIdentityRole<string>, string>(
+                configuration.GetConnectionString("DefaultConnection")!,
+                configuration["MongoDB:DatabaseName"]!)
             .AddDefaultTokenProviders();
 
-            var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()!;
+            JwtSettingsDto jwtSettings = configuration.GetSection("Jwt").Get<JwtSettingsDto>()!;
 
             services.AddAuthentication(options =>
             {

@@ -13,7 +13,7 @@ namespace Richter.WhoAmIApi.IoC.Config.Filters.Exceptions
         {
             var exception = context.Exception.InnerException ?? context.Exception;
 
-            if (exception is BusinessRuleException)
+            if (exception is RegraDeNegocioException)
             {
                 var message = exception.Message;
 

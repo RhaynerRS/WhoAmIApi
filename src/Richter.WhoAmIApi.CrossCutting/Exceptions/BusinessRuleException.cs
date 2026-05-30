@@ -1,14 +1,14 @@
 ﻿namespace Richter.WhoAmIApi.CrossCutting.Exceptions
 {
-    public class BusinessRuleException : Exception
+    public class RegraDeNegocioException : Exception
     {
-        public BusinessRuleException()
+        public RegraDeNegocioException()
         { }
 
-        public BusinessRuleException(string mensagem) : base(mensagem)
+        public RegraDeNegocioException(string mensagem) : base(mensagem)
         { }
 
-        public BusinessRuleException(string message, Exception innerException) : base(message, innerException)
+        public RegraDeNegocioException(string mensagem, Exception innerException) : base(mensagem, innerException)
         { }
     }
 }
