@@ -1,8 +1,10 @@
 ﻿using Richter.WhoAmIApi.IoC.Config;
+using Richter.WhoAmIApi.IoC.Middlewares;
 using Richter.WhoAmIApi.IoC.Config.Filters;
 using Richter.WhoAmIApi.IoC.Config.Identity;
 using Richter.WhoAmIApi.IoC.Config.Swagger;
 using Richter.WhoAmIApi.IoC.Settings;
+using Richter.WhoAmIApi.CrossCutting.DTO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -24,16 +26,20 @@ namespace Richter.WhoAmIApi.IoC
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
             services.AddIdentityConfiguration(configuration);
+            services.AddRedis(configuration);
 
             services.AddRegraNecocioExceptionFilter();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddSerilog(environment, serilogSettings);
             services.AddVersioning();
-            services.AddSwagger();  
+            services.AddSwagger();
+            services.AddMongo(configuration);
             services.AddHealthChecks(serilogSettings);
             services.AddOpenTelemetry(configuration, environment);
             services.AddCustomLocalization();
             services.AddMapsterConfig();
+
+            services.AddScoped<UsuarioAutenticadoDto>();
 
             services.InjetarDependenciasApplication();
             services.InjetarDependenciasDomain();
@@ -60,6 +66,7 @@ namespace Richter.WhoAmIApi.IoC
             app.ConfigureSwagger(applicationSettings);
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<UsuarioAutenticadoMiddleware>();
             app.MapControllers();
 
             return app;

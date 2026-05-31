@@ -50,6 +50,7 @@ namespace Richter.WhoAmIApi.Infra.Identity.Repositories
             [
                 new(JwtRegisteredClaimNames.Sub, usuario.Id),
                 new(JwtRegisteredClaimNames.Email, usuario.Email!),
+                new(JwtRegisteredClaimNames.UniqueName, usuario.UserName!),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             ];
 

@@ -9,10 +9,10 @@
     <PackageReference Include="FluentNHibernate" Version="3.4.1" />
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.24" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Richter.WhoAmIApi.Application\Richter.WhoAmIApi.Application.csproj" />
     <ProjectReference Include="..\Richter.WhoAmIApi.Domain\Richter.WhoAmIApi.Domain.csproj" />
   </ItemGroup>
 

@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Richter.WhoAmIApi.CrossCutting\Richter.WhoAmIApi.CrossCutting.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Rooms\Services\" />
+  </ItemGroup>
+
 </Project>

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Richter.WhoAmIApi.Domain\Richter.WhoAmIApi.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Room\DataModule\Request\" />
+  </ItemGroup>
+
 </Project>
